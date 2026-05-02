@@ -1413,3 +1413,370 @@ body.login-page .login-btn:hover {
         font-size: 38px !important;
     }
 }
+
+@media (max-width: 768px) {
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .app-layout {
+        display: block;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        padding: 18px 16px;
+        border-right: none;
+        border-bottom: 1px solid #252525;
+    }
+
+    .sidebar-logo {
+        margin-bottom: 18px;
+        gap: 12px;
+    }
+
+    .logo-box {
+        width: 52px;
+        height: 52px;
+        border-radius: 15px;
+        font-size: 18px;
+        margin-bottom: 0;
+    }
+
+    .logo-title {
+        font-size: 18px;
+    }
+
+    .logo-subtitle {
+        font-size: 13px;
+    }
+
+    .sidebar-nav {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 6px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sidebar-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .sidebar-link {
+        flex: 0 0 auto;
+        width: auto;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-size: 14px;
+        white-space: nowrap;
+        text-align: center;
+        border-left: none !important;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.active {
+        border-left: none !important;
+        border-bottom: none !important;
+        background: rgba(224, 0, 0, 0.22);
+        color: #ffffff;
+    }
+
+    .workspace {
+        padding: 18px 14px;
+    }
+
+    .page-header,
+    .hero-actions {
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 22px;
+    }
+
+    .page-header h1,
+    .hero-actions h1 {
+        font-size: 30px;
+        line-height: 1.05;
+    }
+
+    .page-header p,
+    .hero-actions p {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .hero-buttons,
+    .dashboard-actions,
+    .form-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        height: 50px;
+        font-size: 15px;
+        border-radius: 14px;
+    }
+
+    .quick-filters {
+        gap: 8px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .quick-filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-chip {
+        flex: 0 0 auto;
+        font-size: 13px;
+        padding: 9px 13px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-bottom: 22px;
+    }
+
+    .dashboard-card {
+        min-height: 118px;
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .dashboard-card h3 {
+        font-size: 32px;
+        margin: 12px 0 6px;
+    }
+
+    .card-head span {
+        font-size: 15px;
+    }
+
+    .section-box,
+    .table-box,
+    .detail-card,
+    .table-card {
+        border-radius: 18px;
+    }
+
+    .section-box,
+    .table-box,
+    .detail-card {
+        padding: 18px 14px;
+    }
+
+    .section-header h2,
+    .section-title h2,
+    .detail-card h2 {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+
+    .section-header p,
+    .section-title p {
+        font-size: 14px;
+        line-height: 1.4;
+        margin-bottom: 16px;
+    }
+
+    .master-workload-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .master-workload-card {
+        padding: 16px;
+        min-height: 82px;
+    }
+
+    .master-workload-card strong {
+        font-size: 14px;
+    }
+
+    .master-workload-card span {
+        font-size: 12px;
+    }
+
+    .master-count {
+        min-width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+
+    .repairs-toolbar {
+        grid-template-columns: 1fr;
+        padding: 14px;
+        gap: 12px;
+        border-radius: 18px;
+    }
+
+    .search-panel input,
+    .repairs-toolbar .search-panel input,
+    .repairs-toolbar select {
+        height: 50px;
+        font-size: 14px;
+        border-radius: 14px;
+    }
+
+    .table-card {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table,
+    .data-table,
+    .dashboard-table {
+        min-width: 760px;
+        table-layout: fixed;
+    }
+
+    th,
+    .data-table th {
+        padding: 14px 12px;
+        font-size: 12px;
+    }
+
+    td,
+    .data-table td {
+        padding: 14px 12px;
+        font-size: 13px;
+    }
+
+    .plate-badge {
+        min-width: auto;
+        font-size: 11px;
+        padding: 4px 9px;
+    }
+
+    .status-badge {
+        font-size: 11px;
+        padding: 6px 9px;
+    }
+
+    .row-action {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        font-size: 12px;
+    }
+
+    .pdf-action {
+        width: 44px;
+    }
+
+    .form-card {
+        width: 100%;
+        margin: 18px auto;
+        padding: 22px 16px;
+        border-radius: 20px;
+    }
+
+    .form-card h2 {
+        font-size: 28px;
+        line-height: 1.1;
+    }
+
+    .form-card p {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .form-grid,
+    .detail-layout,
+    .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    input,
+    textarea,
+    select {
+        font-size: 14px;
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    textarea {
+        min-height: 130px;
+    }
+
+    .detail-item {
+        padding: 14px;
+    }
+
+    .detail-item strong {
+        font-size: 15px;
+    }
+
+    .car-detail-image {
+        max-height: 240px;
+        border-radius: 16px;
+    }
+}
+
+@media (max-width: 430px) {
+
+    .workspace {
+        padding: 16px 12px;
+    }
+
+    .page-header h1,
+    .hero-actions h1 {
+        font-size: 28px;
+    }
+
+    .dashboard-card h3 {
+        font-size: 30px;
+    }
+
+    .section-header h2,
+    .section-title h2 {
+        font-size: 22px;
+    }
+
+    table,
+    .data-table,
+    .dashboard-table {
+        min-width: 720px;
+    }
+
+    body.login-page {
+        padding: 18px !important;
+        align-items: center !important;
+    }
+
+    body.login-page .login-card {
+        width: 100% !important;
+        padding: 34px 24px !important;
+        border-radius: 22px !important;
+    }
+
+    body.login-page .login-card h1 {
+        font-size: 42px !important;
+        line-height: 1.05 !important;
+    }
+
+    body.login-page .login-card p {
+        font-size: 15px !important;
+    }
+
+    body.login-page .login-card input {
+        height: 52px !important;
+    }
+
+    body.login-page .login-btn {
+        height: 52px !important;
+    }
+}
