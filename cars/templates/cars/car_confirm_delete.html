@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 50px auto; text-align: center;">
+
+    <div class="stat-card" style="background: #1a1a1a; border: 1px solid #D60000; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+
+        <div style="font-size: 50px; margin-bottom: 20px;">⚠️</div>
+
+        <h2 style="color: white; text-transform: uppercase; font-weight: 800; margin-bottom: 20px;">
+            Видалення авто
+        </h2>
+
+        <p style="color: #ccc; font-size: 16px; margin-bottom: 30px; line-height: 1.5;">
+            Ви впевнені, що хочете видалити автомобіль <br>
+            <strong style="color: #D60000; font-size: 18px;">{{ car.make }} {{ car.model }}</strong> <br>
+            (VIN: {{ car.vin }})?
+        </p>
+
+        <p style="color: #666; font-size: 13px; margin-bottom: 40px;">
+            Цю дію неможливо скасувати. Всі пов'язані ремонти також можуть бути видалені.
+        </p>
+
+        <form method="post" style="display: flex; gap: 15px; justify-content: center; background: transparent; padding: 0; border: none;">
+            {% csrf_token %}
+
+            <a href="{% url 'car_list' %}" class="btn" style="background: transparent; border: 1px solid #444; color: #888;">
+                СКАСУВАТИ
+            </a>
+
+            <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%); border: none; box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);">
+                ТАК, ВИДАЛИТИ
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

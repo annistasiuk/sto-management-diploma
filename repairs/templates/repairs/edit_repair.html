@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h2>Редагування ремонту</h2>
+
+    <p>
+        {{ repair.car.make }} {{ repair.car.model_name }}
+        {% if repair.car.license_plate %}
+            — {{ repair.car.license_plate }}
+        {% endif %}
+    </p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="car" value="{{ repair.car.id }}">
+
+        {% if form.errors %}
+            <div class="form-errors">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+
+        <div class="form-section-title">Автомобіль</div>
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+                <span>Автомобіль</span>
+                <strong>{{ repair.car.make }} {{ repair.car.model_name }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Держномер</span>
+                <strong>{{ repair.car.license_plate|default:"Не вказано" }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Власник</span>
+
+                {% if repair.car.owner %}
+                    <strong>{{ repair.car.owner.full_name }}</strong>
+                {% else %}
+                    <strong>{{ repair.car.owner_name|default:"Не вказано" }}</strong>
+                {% endif %}
+            </div>
+
+            <div class="detail-item">
+                <span>Телефон</span>
+
+                {% if repair.car.owner %}
+                    <strong>{{ repair.car.owner.phone|default:"Не вказано" }}</strong>
+                {% else %}
+                    <strong>Не вказано</strong>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <div class="form-section-title">Фото автомобіля</div>
+
+        {% if repair.car.main_image %}
+            <img
+                src="{{ repair.car.main_image.url }}"
+                alt="{{ repair.car.make }} {{ repair.car.model_name }}"
+                class="car-detail-image"
+            >
+        {% else %}
+            <div class="empty-photo">
+                Фото автомобіля не додано
+            </div>
+        {% endif %}
+
+        <div class="form-group full" style="margin-top: 18px;">
+            <label>Змінити фото</label>
+            <input type="file" name="main_image" accept="image/*">
+        </div>
+
+        <div class="form-section-title">Дані ремонту</div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Статус ремонту</label>
+                {{ form.status }}
+            </div>
+
+            <div class="form-group">
+                <label>Майстер</label>
+                {{ form.master }}
+            </div>
+
+            <div class="form-group">
+                <label>Планова дата завершення</label>
+                {{ form.planned_end_date }}
+            </div>
+
+            <div class="form-group">
+                <label>Вартість робіт</label>
+                {{ form.labor_cost }}
+            </div>
+
+            <div class="form-group">
+                <label>Вартість запчастин</label>
+                {{ form.parts_cost }}
+            </div>
+
+            <div class="form-group full">
+                <label>Опис несправності</label>
+                {{ form.problem_description }}
+            </div>
+
+            <div class="form-group full">
+                <label>Виконані роботи</label>
+                {{ form.work_description }}
+            </div>
+
+            <div class="form-group full">
+                <label>Примітки</label>
+                {{ form.notes }}
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'repair_list' %}" class="btn-secondary">
+                Назад
+            </a>
+
+            <button type="submit" class="btn-primary">
+                Зберегти зміни
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

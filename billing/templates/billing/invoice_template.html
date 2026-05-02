@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Рахунок-фактура</title>
+    <style>
+        @page {
+            size: a4 portrait;
+            margin: 2cm;
+        }
+
+        body {
+            font-family: "Helvetica", "Arial", sans-serif;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #000;
+            border-bottom: 2px solid #555;
+            padding-bottom: 10px;
+        }
+
+        /* Використовуємо таблиці для розмітки, оскільки flex/grid не підтримуються */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .info-table td {
+            width: 50%;
+            vertical-align: top;
+            padding: 5px;
+        }
+
+        .info-table .label {
+            font-weight: bold;
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .details-table th, .details-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .details-table th {
+            background-color: #f4f4f4;
+        }
+
+        .total-row {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .total-row td {
+            text-align: right;
+            border-top: 2px solid #333;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Рахунок-фактура № {{ repair.id }}</h1>
+        <p style="text-align: center;">Дата: {{ repair.start_date|date:"d.m.Y" }}</p>
+
+        <table class="info-table">
+            <tr>
+                <td>
+                    <span class="label">Постачальник (СТО):</span><br>
+                    СТО "Супер-Авто" <br>
+                    м. Київ, вул. Ремонтна, 1<br>
+                    (044) 123-45-67
+                </td>
+                <td>
+                    <span class="label">Платник (Клієнт):</span><br>
+                    {{ repair.car.owner_name }}<br>
+                    <!-- Припускаємо, що у моделі Car є поле owner_phone -->
+                    Телефон: {{ repair.car.owner_phone }}<br>
+                    Автомобіль: {{ repair.car }}
+                </td>
+            </tr>
+        </table>
+
+        <h2>Деталізація робіт</h2>
+
+        <table class="details-table">
+            <thead>
+                <tr>
+                    <th>Опис послуги/роботи</th>
+                    <th>Вартість</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <p><strong>Ремонтні роботи для {{ repair.car }}:</strong></p>
+                        <!-- Використовуємо 'linebreaksbr' для коректного відображення переносів рядків -->
+                        <p>{{ repair.description|linebreaksbr }}</p>
+                    </td>
+                    <td>{{ total_cost }} грн</td>
+                </tr>
+
+                <!-- Загальна сума -->
+                <tr class="total-row">
+                    <td>Всього до сплати:</td>
+                    <td>{{ total_cost }} грн</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top: 50px;">
+            <p>Дякуємо за ваш візит!</p>
+            <p>Підпис виконавця: _________________________</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>{{ client.full_name }}</h1>
+        <p>Картка клієнта</p>
+    </div>
+
+    <div class="hero-buttons">
+        <a href="{% url 'edit_client' client.id %}" class="btn-primary">Редагувати</a>
+        <a href="{% url 'client_list' %}" class="btn-secondary">Назад</a>
+    </div>
+</div>
+
+<div class="detail-card">
+
+    <h2>Дані клієнта</h2>
+
+    <div class="detail-grid">
+
+        <div class="detail-item">
+            <span>ПІБ</span>
+            <strong>{{ client.full_name }}</strong>
+        </div>
+
+        <div class="detail-item">
+            <span>Телефон</span>
+            {% if client.phone %}
+                <strong>{{ client.phone }}</strong>
+            {% else %}
+                <strong>Не вказано</strong>
+            {% endif %}
+        </div>
+
+        <div class="detail-item">
+            <span>Email</span>
+            {% if client.email %}
+                <strong>{{ client.email }}</strong>
+            {% else %}
+                <strong>Не вказано</strong>
+            {% endif %}
+        </div>
+
+        <div class="detail-item">
+            <span>Кількість авто</span>
+            <strong>{{ cars.count }}</strong>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="detail-card">
+
+    <h2>Автомобілі клієнта</h2>
+
+    <table class="dashboard-table">
+        <thead>
+            <tr>
+                <th>Автомобіль</th>
+                <th>Держномер</th>
+                <th>Рік</th>
+                <th>Ремонтів</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for car in cars %}
+            <tr>
+                <td>
+                    <a href="{% url 'car_detail' car.id %}" class="car-link">
+                        {{ car.make }} {{ car.model_name }}
+                    </a>
+                </td>
+
+                <td>
+                    {% if car.license_plate %}
+                        <span class="plate-badge">{{ car.license_plate }}</span>
+                    {% else %}
+                        <span class="muted-text">—</span>
+                    {% endif %}
+                </td>
+
+                <td>{{ car.year }}</td>
+
+                <td>{{ car.repairs.count }}</td>
+
+                <td>
+                    <div class="actions-cell">
+                        <a href="{% url 'car_detail' car.id %}" class="row-action" title="Переглянути">
+                            →
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5" class="empty-row">
+                    У цього клієнта ще немає автомобілів
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

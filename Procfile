@@ -1,0 +1,1 @@
+web: gunicorn sto_management.wsgi:application

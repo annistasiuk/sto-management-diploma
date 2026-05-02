@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Клієнти</h1>
+        <p>База клієнтів станції технічного обслуговування</p>
+    </div>
+</div>
+
+<form method="get" class="search-panel">
+    <input
+        type="text"
+        name="q"
+        value="{{ query }}"
+        placeholder="Пошук за ПІБ, телефоном або email"
+        autocomplete="off"
+    >
+</form>
+
+<div class="table-card">
+    <table class="data-table clients-table">
+        <thead>
+            <tr>
+                <th>ПІБ</th>
+                <th>Телефон</th>
+                <th>Email</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for client in clients %}
+            <tr>
+                <td class="client-name-cell">
+                    <a href="{% url 'client_detail' client.id %}" class="client-link">
+                        {{ client.full_name }}
+                    </a>
+                </td>
+
+                <td>
+                    {% if client.phone %}
+                        {{ client.phone }}
+                    {% else %}
+                        <span class="muted-text">—</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if client.email %}
+                        {{ client.email }}
+                    {% else %}
+                        <span class="muted-text">—</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <div class="actions-cell">
+                        <a href="{% url 'edit_client' client.id %}" class="row-action" title="Редагувати">
+                            ✎
+                        </a>
+
+                        <a href="{% url 'delete_client' client.id %}" class="row-action danger-action" title="Видалити">
+                            ×
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4" class="empty-row">
+                    Клієнтів ще немає
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

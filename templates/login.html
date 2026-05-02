@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Вхід | СТО Менеджер</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="login-page">
+
+    <div class="login-card">
+
+        <div class="logo-box">
+            СТО
+        </div>
+
+        <h1>Вхід у систему</h1>
+        <p>Авторизація персоналу СТО</p>
+
+        {% if error %}
+            <div class="form-errors">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Логін</label>
+                <input type="text" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn-primary login-btn">
+                Увійти
+            </button>
+        </form>
+
+    </div>
+
+</body>
+</html>

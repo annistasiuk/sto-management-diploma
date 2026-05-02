@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>{{ car.make }} {{ car.model_name }}</h1>
+        <p>Картка автомобіля</p>
+    </div>
+
+    <div class="hero-buttons">
+        <a href="{% url 'add_repair_for_car' car.id %}" class="btn-primary">
+            + Додати ремонт
+        </a>
+
+        <a href="{% url 'edit_car' car.id %}" class="btn-secondary">
+            Редагувати
+        </a>
+
+        <a href="{% url 'car_list' %}" class="btn-secondary">
+            Назад
+        </a>
+    </div>
+</div>
+
+<div class="detail-layout">
+
+    <div class="detail-card">
+
+        <h2>Інформація про авто</h2>
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+                <span>Марка / модель</span>
+                <strong>{{ car.make }} {{ car.model_name }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Держномер</span>
+                {% if car.license_plate %}
+                    <strong>{{ car.license_plate }}</strong>
+                {% else %}
+                    <strong>Не вказано</strong>
+                {% endif %}
+            </div>
+
+            <div class="detail-item">
+                <span>VIN-код</span>
+                <strong>{{ car.vin }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Рік випуску</span>
+                <strong>{{ car.year }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Колір</span>
+                <strong>{{ car.color }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Пробіг</span>
+                <strong>{{ car.mileage }} км</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Обʼєм двигуна</span>
+                {% if car.engine_volume %}
+                    <strong>{{ car.engine_volume }} л</strong>
+                {% else %}
+                    <strong>Не вказано</strong>
+                {% endif %}
+            </div>
+
+            <div class="detail-item">
+                <span>Дата додавання</span>
+                <strong>{{ car.created_at|date:"d.m.Y H:i" }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="detail-card">
+
+        <h2>Власник</h2>
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+                <span>ПІБ</span>
+
+                {% if car.owner %}
+                    <strong>{{ car.owner.full_name }}</strong>
+                {% elif car.owner_name %}
+                    <strong>{{ car.owner_name }}</strong>
+                {% else %}
+                    <strong>Не вказано</strong>
+                {% endif %}
+            </div>
+
+            <div class="detail-item">
+                <span>Телефон</span>
+
+                {% if car.owner and car.owner.phone %}
+                    <strong>{{ car.owner.phone }}</strong>
+                {% else %}
+                    <strong>Не вказано</strong>
+                {% endif %}
+            </div>
+
+            <div class="detail-item">
+                <span>Email</span>
+
+                {% if car.owner and car.owner.email %}
+                    <strong>{{ car.owner.email }}</strong>
+                {% else %}
+                    <strong>Не вказано</strong>
+                {% endif %}
+            </div>
+
+            <div class="detail-item">
+                <span>Адреса</span>
+
+                {% if car.owner and car.owner.address %}
+                    <strong>{{ car.owner.address }}</strong>
+                {% else %}
+                    <strong>Не вказано</strong>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="detail-card">
+
+    <h2>Фото автомобіля</h2>
+
+    {% if car.main_image %}
+        <img
+            src="{{ car.main_image.url }}"
+            alt="{{ car.make }} {{ car.model_name }}"
+            class="car-detail-image"
+        >
+    {% else %}
+        <div class="empty-photo">
+            Фото автомобіля не додано
+        </div>
+    {% endif %}
+
+</div>
+
+<div class="detail-card">
+
+    <h2>Історія ремонтів</h2>
+
+    <table class="dashboard-table">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Опис проблеми</th>
+                <th>Майстер</th>
+                <th>Статус</th>
+                <th>Сума</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for repair in repairs %}
+            <tr>
+
+                <td>
+                    {{ repair.start_date|date:"d.m.Y H:i" }}
+                </td>
+
+                <td>
+                    {{ repair.problem_description|truncatechars:60 }}
+                </td>
+
+                <td>
+                    {% if repair.master %}
+                        {{ repair.master.full_name }}
+                    {% else %}
+                        <span class="danger-text">
+                            Не призначено
+                        </span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <span class="status-badge status-{{ repair.status }}">
+                        {{ repair.get_status_display }}
+                    </span>
+                </td>
+
+                <td>
+                    <strong>{{ repair.total_cost }} грн</strong>
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="5" class="empty-row">
+                    Для цього автомобіля ще немає ремонтів
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

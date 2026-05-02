@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h2>Редагування автомобіля</h2>
+    <p>Оновлення даних транспортного засобу</p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-section-title">Основна інформація</div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>{{ form.make.label }}</label>
+                {{ form.make }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.model_name.label }}</label>
+                {{ form.model_name }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.license_plate.label }}</label>
+                {{ form.license_plate }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.vin.label }}</label>
+                {{ form.vin }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.owner_name.label }}</label>
+                {{ form.owner_name }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.owner_phone.label }}</label>
+                {{ form.owner_phone }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.year.label }}</label>
+                {{ form.year }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.color.label }}</label>
+                {{ form.color }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.mileage.label }}</label>
+                {{ form.mileage }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.engine_volume.label }}</label>
+                {{ form.engine_volume }}
+            </div>
+
+            <div class="form-group full">
+                <label>{{ form.description.label }}</label>
+                {{ form.description }}
+            </div>
+
+            <div class="form-group full">
+                <label>{{ form.main_image.label }}</label>
+                {{ form.main_image }}
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'car_list' %}" class="btn-secondary">Назад</a>
+            <button type="submit" class="btn-primary">Зберегти зміни</button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

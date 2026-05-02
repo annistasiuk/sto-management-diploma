@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h2>Нова заявка на ремонт</h2>
+    <p>Одночасна реєстрація клієнта, автомобіля та ремонтного замовлення</p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-section-title">Дані клієнта</div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>{{ form.client_full_name.label }}</label>
+                {{ form.client_full_name }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.client_phone.label }}</label>
+                {{ form.client_phone }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.client_email.label }}</label>
+                {{ form.client_email }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.client_address.label }}</label>
+                {{ form.client_address }}
+            </div>
+        </div>
+
+        <div class="form-section-title">Автомобіль</div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>{{ form.car_make.label }}</label>
+                {{ form.car_make }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.car_model.label }}</label>
+                {{ form.car_model }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.license_plate.label }}</label>
+                {{ form.license_plate }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.vin.label }}</label>
+                {{ form.vin }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.year.label }}</label>
+                {{ form.year }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.color.label }}</label>
+                {{ form.color }}
+            </div>
+
+            <div class="form-group full">
+                <label>{{ form.main_image.label }}</label>
+                {{ form.main_image }}
+            </div>
+        </div>
+
+        <div class="form-section-title">Ремонт</div>
+
+        <div class="form-grid">
+            <div class="form-group full">
+                <label>{{ form.problem_description.label }}</label>
+                {{ form.problem_description }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.status.label }}</label>
+                {{ form.status }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.master_name.label }}</label>
+                {{ form.master_name }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.labor_cost.label }}</label>
+                {{ form.labor_cost }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.parts_cost.label }}</label>
+                {{ form.parts_cost }}
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'repair_list' %}" class="btn-secondary">Скасувати</a>
+            <button type="submit" class="btn-primary">Створити заявку</button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

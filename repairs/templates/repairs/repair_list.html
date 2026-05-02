@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Ремонтні замовлення</h1>
+        <p>Журнал заявок на ремонт транспортних засобів</p>
+    </div>
+
+    {% if is_admin or is_manager %}
+        <div class="hero-buttons">
+            <a href="{% url 'add_repair' %}" class="btn-primary">
+                + Нова заявка
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<form method="get" class="repairs-toolbar">
+
+    <div class="search-panel">
+        <input
+            type="text"
+            name="q"
+            value="{{ query }}"
+            placeholder="Пошук за авто, держномером, клієнтом, проблемою або майстром"
+            autocomplete="off"
+        >
+    </div>
+
+    <div class="filter-group">
+        <label>Статус</label>
+
+        <select name="status">
+            <option value="">Всі ремонти</option>
+
+            {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if current_filter == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit" class="btn-primary">
+        Застосувати
+    </button>
+
+</form>
+
+<div class="table-card">
+
+    <table class="data-table repairs-table">
+
+        <thead>
+            <tr>
+                <th>Авто</th>
+                <th>Клієнт</th>
+                <th>Майстер</th>
+                <th>Статус</th>
+                <th>Сума</th>
+                <th>Дата</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for repair in repairs %}
+            <tr>
+
+                <td class="car-name-cell">
+                    <a href="{% url 'car_detail' repair.car.id %}" class="car-link">
+                        {{ repair.car.make }} {{ repair.car.model_name }}
+                    </a>
+
+                    {% if repair.car.license_plate %}
+                        <br>
+                        <span class="plate-badge">
+                            {{ repair.car.license_plate }}
+                        </span>
+                    {% endif %}
+                </td>
+
+                <td class="owner-cell">
+                    {% if repair.car.owner %}
+                        <a href="{% url 'client_detail' repair.car.owner.id %}" class="client-link">
+                            {{ repair.car.owner.full_name }}
+                        </a>
+                    {% elif repair.car.owner_name %}
+                        {{ repair.car.owner_name }}
+                    {% else %}
+                        <span class="muted-text">Не вказано</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if repair.master %}
+                        {{ repair.master.full_name }}
+                    {% else %}
+                        <span class="danger-text">Не призначено</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <span class="status-badge status-{{ repair.status }}">
+                        {{ repair.get_status_display }}
+                    </span>
+                </td>
+
+                <td>
+                    <strong>{{ repair.total_cost }} грн</strong>
+                </td>
+
+                <td>
+                    {{ repair.start_date|date:"d.m.Y" }}
+                </td>
+
+                <td>
+                    <div class="actions-cell repair-actions">
+
+                        <a
+                            href="{% url 'edit_repair' repair.id %}"
+                            class="row-action"
+                            title="Редагувати"
+                        >
+                            ✎
+                        </a>
+
+                        <a
+                            href="{% url 'repair_pdf' repair.id %}"
+                            class="row-action pdf-action"
+                            title="PDF чек"
+                        >
+                            PDF
+                        </a>
+
+                        {% if is_admin or is_manager %}
+                            <a
+                                href="{% url 'delete_repair' repair.id %}"
+                                class="row-action danger-action"
+                                title="Видалити"
+                            >
+                                ×
+                            </a>
+                        {% endif %}
+
+                    </div>
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+                <td colspan="7" class="empty-row">
+                    Ремонтних замовлень ще немає
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

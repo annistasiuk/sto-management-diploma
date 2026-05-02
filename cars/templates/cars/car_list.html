@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>БАЗА АВТОМОБІЛІВ</h1>
+        <p>Список зареєстрованих транспортних засобів</p>
+    </div>
+</div>
+
+<form method="get" class="search-panel">
+    <input
+        type="text"
+        name="q"
+        value="{{ query }}"
+        placeholder="Пошук за держномером, моделлю, власником або телефоном"
+        autocomplete="off"
+    >
+</form>
+
+<div class="table-card">
+    <table class="data-table cars-table">
+        <thead>
+            <tr>
+                <th>Автомобіль</th>
+                <th>Держномер</th>
+                <th>Рік</th>
+                <th>Власник</th>
+                <th>Телефон</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for car in cars %}
+            <tr>
+                <td class="car-name-cell">
+                    <a href="{% url 'car_detail' car.id %}" class="car-link">
+                        {{ car.make }} {{ car.model_name }}
+                    </a>
+                </td>
+
+                <td>
+                    {% if car.license_plate %}
+                        <span class="plate-badge">{{ car.license_plate }}</span>
+                    {% else %}
+                        <span class="muted-text">—</span>
+                    {% endif %}
+                </td>
+
+                <td>{{ car.year }}</td>
+
+                <td class="owner-cell">
+                    {% if car.owner %}
+                        {{ car.owner.full_name }}
+                    {% elif car.owner_name %}
+                        {{ car.owner_name }}
+                    {% else %}
+                        <span class="muted-text">Не вказано</span>
+                    {% endif %}
+                </td>
+
+                <td class="phone-cell">
+                    {% if car.owner and car.owner.phone %}
+                        {{ car.owner.phone }}
+                    {% else %}
+                        <span class="muted-text">—</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <div class="actions-cell">
+                        <a href="{% url 'edit_car' car.id %}" class="row-action" title="Редагувати">
+                            ✎
+                        </a>
+
+                        <a href="{% url 'delete_car' car.id %}" class="row-action danger-action" title="Видалити">
+                            ×
+                        </a>
+                    </div>
+                </td>
+            </tr>
+
+            {% empty %}
+            <tr>
+                <td colspan="6" class="empty-row">
+                    Автомобілі відсутні
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

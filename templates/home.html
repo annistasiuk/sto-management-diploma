@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="hero-actions">
+    <div>
+        <h1>Головна панель</h1>
+        <p>Оперативний стан роботи СТО</p>
+    </div>
+
+    {% if is_admin or is_manager %}
+    <div class="hero-buttons">
+        <a href="{% url 'add_repair' %}" class="btn-primary">
+            + Нова заявка
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="quick-filters">
+    <a href="{% url 'home' %}" class="filter-chip">Всі</a>
+    <a href="?status=in_progress" class="filter-chip">В роботі</a>
+    <a href="?status=awaiting_parts" class="filter-chip">Очікують запчастини</a>
+    <a href="?status=completed" class="filter-chip">Готові</a>
+</div>
+
+<div class="dashboard-grid">
+
+    <div class="dashboard-card">
+        <div class="card-head">
+            <span>Активні ремонти</span>
+        </div>
+        <h3>{{ active_repairs }}</h3>
+        <p>Авто в роботі</p>
+    </div>
+
+    <div class="dashboard-card">
+        <div class="card-head">
+            <span>Очікують запчастини</span>
+        </div>
+        <h3>{{ awaiting_parts }}</h3>
+        <p>Потребують контролю</p>
+    </div>
+
+    <div class="dashboard-card">
+        <div class="card-head">
+            <span>Завершені</span>
+        </div>
+        <h3>{{ completed_repairs }}</h3>
+        <p>Готові до видачі</p>
+    </div>
+
+    <div class="dashboard-card {% if today_repairs == 0 %}card-muted{% endif %}">
+        <div class="card-head">
+            <span>Записів сьогодні</span>
+        </div>
+        <h3>{{ today_repairs }}</h3>
+        <p>Нові заявки</p>
+    </div>
+
+    <div class="dashboard-card {% if unassigned_repairs == 0 %}card-muted{% endif %}">
+        <div class="card-head">
+            <span>Без майстра</span>
+        </div>
+        <h3>{{ unassigned_repairs }}</h3>
+        <p>Потрібно призначити</p>
+    </div>
+
+</div>
+
+<div class="section-box master-workload-box">
+
+    <div class="section-header">
+        <h2>Зайнятість майстрів</h2>
+        <p>Кількість активних ремонтів у кожного майстра</p>
+    </div>
+
+    <div class="master-workload-grid">
+
+        {% for master in master_workload %}
+        <div class="master-workload-card">
+
+            <div>
+                <strong>{{ master.full_name }}</strong>
+
+                <span>
+                    {{ master.specialization|default:"Спеціалізація не вказана" }}
+                </span>
+            </div>
+
+            <div class="master-count">
+                {{ master.active_repairs_count }}
+            </div>
+
+        </div>
+        {% empty %}
+
+        <div class="empty-row">
+            Майстрів ще не додано
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<div class="section-box">
+
+    <div class="section-header">
+        <h2>Останні ремонти</h2>
+        <p>Актуальні ремонтні замовлення</p>
+    </div>
+
+    <table class="dashboard-table">
+
+        <thead>
+            <tr>
+                <th>Авто</th>
+                <th>Клієнт</th>
+                <th>Майстер</th>
+                <th>Дата/час</th>
+                <th>Статус</th>
+                <th>Сума</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for repair in latest_repairs %}
+        <tr>
+
+            <td class="car-name-cell">
+                <a href="{% url 'car_detail' repair.car.id %}" class="car-link">
+                    {{ repair.car.make }} {{ repair.car.model_name }}
+                </a>
+
+                {% if repair.car.license_plate %}
+                    <br>
+                    <span class="plate-badge">
+                        {{ repair.car.license_plate }}
+                    </span>
+                {% endif %}
+            </td>
+
+            <td class="owner-cell">
+                {% if repair.car.owner %}
+                    <a href="{% url 'client_detail' repair.car.owner.id %}" class="client-link">
+                        {{ repair.car.owner.full_name }}
+                    </a>
+                {% elif repair.car.owner_name %}
+                    {{ repair.car.owner_name }}
+                {% else %}
+                    <span class="muted-text">Не вказано</span>
+                {% endif %}
+            </td>
+
+            <td>
+                {% if repair.master %}
+                    {{ repair.master.full_name }}
+                {% else %}
+                    <span class="danger-text">Не призначено</span>
+                {% endif %}
+            </td>
+
+            <td>
+                {{ repair.start_date|date:"d.m.Y H:i" }}
+
+                {% if repair.is_overdue %}
+                    <br>
+                    <span style="color:#ff4d4d;font-size:12px;font-weight:700;">
+                        🔴 Прострочено
+                    </span>
+
+                {% elif repair.is_today_deadline %}
+                    <br>
+                    <span style="color:#ffb347;font-size:12px;font-weight:700;">
+                        🟠 Дедлайн сьогодні
+                    </span>
+                {% endif %}
+            </td>
+
+            <td>
+
+                <span class="status-badge status-{{ repair.status }}">
+                    {{ repair.get_status_display }}
+                </span>
+
+                <div class="status-actions">
+
+                    {% if repair.status == 'new' %}
+                        <a href="{% url 'update_repair_status' repair.id 'in_progress' %}" class="status-action-btn">
+                            Прийняти
+                        </a>
+
+                    {% elif repair.status == 'in_progress' %}
+                        <a href="{% url 'update_repair_status' repair.id 'completed' %}" class="status-action-btn">
+                            Завершити
+                        </a>
+
+                        <a href="{% url 'update_repair_status' repair.id 'awaiting_parts' %}" class="status-action-btn muted-action">
+                            Запчастини
+                        </a>
+
+                    {% elif repair.status == 'awaiting_parts' %}
+                        <a href="{% url 'update_repair_status' repair.id 'in_progress' %}" class="status-action-btn">
+                            В роботу
+                        </a>
+
+                    {% elif repair.status == 'completed' %}
+                        <a href="{% url 'update_repair_status' repair.id 'issued' %}" class="status-action-btn">
+                            Видано
+                        </a>
+
+                    {% elif repair.status == 'issued' %}
+                        <span class="status-badge status-issued">
+                            Закрито
+                        </span>
+                    {% endif %}
+
+                </div>
+
+            </td>
+
+            <td>
+                <strong>{{ repair.total_cost }} грн</strong>
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+            <td colspan="6" class="empty-row">
+                Ремонтних заявок ще немає
+            </td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

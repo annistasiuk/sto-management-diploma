@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="form-page">
+
+    <div class="form-box" style="max-width:600px;">
+
+        <h1>Видалення клієнта</h1>
+
+        <p style="margin-top:20px; font-size:18px;">
+            Ви дійсно хочете видалити клієнта:
+        </p>
+
+        <h2 style="margin:20px 0; color:#ff0000;">
+            {{ client.full_name }}
+        </h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-actions">
+
+                <button type="submit" class="btn-primary" style="background:#ff0000;">
+                    Так, видалити
+                </button>
+
+                <a href="{% url 'client_list' %}" class="btn-secondary">
+                    Скасувати
+                </a>
+
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

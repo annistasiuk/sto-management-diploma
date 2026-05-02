@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h2>Редагування клієнта</h2>
+    <p>Оновлення контактних даних клієнта</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-section-title">Дані клієнта</div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>{{ form.full_name.label }}</label>
+                {{ form.full_name }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.phone.label }}</label>
+                {{ form.phone }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.email.label }}</label>
+                {{ form.email }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.address.label }}</label>
+                {{ form.address }}
+            </div>
+
+            <div class="form-group full">
+                <label>{{ form.notes.label }}</label>
+                {{ form.notes }}
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'client_detail' client.id %}" class="btn-secondary">
+                Назад
+            </a>
+
+            <button type="submit" class="btn-primary">
+                Зберегти зміни
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
