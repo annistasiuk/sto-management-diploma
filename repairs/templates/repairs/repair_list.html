@@ -50,9 +50,7 @@
 </form>
 
 <div class="table-card">
-
     <table class="data-table repairs-table">
-
         <thead>
             <tr>
                 <th>Авто</th>
@@ -66,10 +64,8 @@
         </thead>
 
         <tbody>
-
         {% for repair in repairs %}
             <tr>
-
                 <td class="car-name-cell">
                     <a href="{% url 'car_detail' repair.car.id %}" class="car-link">
                         {{ repair.car.make }} {{ repair.car.model_name }}
@@ -119,52 +115,26 @@
 
                 <td>
                     <div class="actions-cell repair-actions">
-
-                        <a
-                            href="{% url 'edit_repair' repair.id %}"
-                            class="row-action"
-                            title="Редагувати"
-                        >
+                        <a href="{% url 'edit_repair' repair.id %}" class="row-action" title="Редагувати">
                             ✎
                         </a>
 
-                        <a
-                            href="{% url 'repair_pdf' repair.id %}"
-                            class="row-action pdf-action"
-                            title="PDF чек"
-                        >
+                        <a href="{% url 'repair_pdf' repair.id %}" class="row-action pdf-action" title="PDF чек">
                             PDF
                         </a>
-
-                        {% if is_admin or is_manager %}
-                            <a
-                                href="{% url 'delete_repair' repair.id %}"
-                                class="row-action danger-action"
-                                title="Видалити"
-                            >
-                                ×
-                            </a>
-                        {% endif %}
-
                     </div>
                 </td>
-
             </tr>
 
         {% empty %}
-
             <tr>
                 <td colspan="7" class="empty-row">
                     Ремонтних замовлень ще немає
                 </td>
             </tr>
-
         {% endfor %}
-
         </tbody>
-
     </table>
-
 </div>
 
 {% endblock %}
