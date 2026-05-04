@@ -1399,13 +1399,6 @@ body.menu-open .mobile-menu-btn span:nth-child(3) {
 .mobile-menu-btn span {
     transition: 0.25s ease;
 }
-@media (max-width: 768px) {
-    body {
-        border: 5px solid red !important;
-    }
-}
-
-/* ===== FINAL PHONE ADAPTIVE FIX ===== */
 
 @media (max-width: 768px) {
     .mobile-menu-btn {
