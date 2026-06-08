@@ -167,13 +167,13 @@
 
                 {% if repair.is_overdue %}
                     <br>
-                    <span style="color:#ff4d4d;font-size:12px;font-weight:700;">
+                    <span class="deadline-badge deadline-badge--overdue">
                         Прострочено
                     </span>
 
                 {% elif repair.is_today_deadline %}
                     <br>
-                    <span style="color:#ffb347;font-size:12px;font-weight:700;">
+                    <span class="deadline-badge deadline-badge--today">
                         Дедлайн сьогодні
                     </span>
                 {% endif %}
@@ -242,5 +242,28 @@
     </table>
 
 </div>
+
+<style>
+.deadline-badge {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    line-height: 1.5;
+}
+
+.deadline-badge--overdue {
+    background-color: rgba(255, 77, 77, 0.18);
+    color: #ff6b6b;
+}
+
+.deadline-badge--today {
+    background-color: rgba(255, 179, 71, 0.18);
+    color: #ffb347;
+}
+</style>
 
 {% endblock %}
