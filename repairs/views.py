@@ -10,8 +10,9 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 
 from .models import Repair
-from .forms import RepairForm
+from .forms import RepairForm, NewRepairRequestForm
 from cars.models import Car
+from clients.models import Client
 from masters.models import Master
 
 
@@ -96,16 +97,42 @@ def add_repair_view(request):
         return redirect('home')
 
     if request.method == 'POST':
-        form = RepairForm(request.POST)
+        form = NewRepairRequestForm(request.POST, request.FILES)
 
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Ремонтну заявку створено.')
+            client = Client.objects.create(
+                full_name=form.cleaned_data['client_full_name'],
+                phone=form.cleaned_data['client_phone'],
+                email=form.cleaned_data.get('client_email') or '',
+                address=form.cleaned_data.get('client_address') or ''
+            )
+
+            car = Car.objects.create(
+                owner=client,
+                make=form.cleaned_data['car_make'],
+                model_name=form.cleaned_data['car_model'],
+                license_plate=(form.cleaned_data.get('license_plate') or '').upper(),
+                vin=form.cleaned_data['vin'].upper(),
+                year=form.cleaned_data['year'],
+                color=form.cleaned_data.get('color') or '',
+                main_image=form.cleaned_data.get('main_image')
+            )
+
+            Repair.objects.create(
+                car=car,
+                problem_description=form.cleaned_data['problem_description'],
+                status=form.cleaned_data['status'],
+                master=form.cleaned_data.get('master'),
+                labor_cost=form.cleaned_data.get('labor_cost') or 0,
+                parts_cost=form.cleaned_data.get('parts_cost') or 0
+            )
+
+            messages.success(request, 'Нову заявку успішно створено.')
             return redirect('repair_list')
 
         messages.error(request, 'Перевірте правильність заповнення форми.')
     else:
-        form = RepairForm()
+        form = NewRepairRequestForm()
 
     return render(request, 'repairs/add_repair.html', {
         'form': form
