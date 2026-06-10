@@ -88,13 +88,11 @@
 
                 <td>{{ car.repairs.count }}</td>
 
-                <td>
-                    <div class="actions-cell">
-                        <a href="{% url 'car_detail' car.id %}" class="row-action" title="Переглянути">
-                            →
-                        </a>
-                    </div>
-                </td>
+              <td style="text-align:center;">
+    <a href="{% url 'car_detail' car.id %}" class="row-action">
+        →
+    </a>
+</td>
             </tr>
         {% empty %}
             <tr>
