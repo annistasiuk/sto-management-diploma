@@ -142,12 +142,18 @@
     <h2>Фото автомобіля</h2>
 
     {% if car.main_image %}
-        <img
-            src="{{ car.main_image.url }}"
-            alt="{{ car.make }} {{ car.model_name }}"
-            class="car-detail-image"
-        >
-    {% else %}
+    <img
+        src="{{ car.main_image.url }}"
+        alt="{{ car.make }} {{ car.model_name }}"
+        style="
+            width: 500px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 20px;
+            display: block;
+        "
+    >
+{% else %}
         <div class="empty-photo">
             Фото автомобіля не додано
         </div>
