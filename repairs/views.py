@@ -3,6 +3,8 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+import os
 
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -237,21 +239,18 @@ def repair_pdf_view(request, repair_id):
     pdf = canvas.Canvas(response, pagesize=A4)
     _, height = A4
 
-    font_paths = [
-        '/System/Library/Fonts/Supplemental/Arial Unicode.ttf',
-        '/Library/Fonts/Arial Unicode.ttf',
-        '/System/Library/Fonts/Supplemental/Arial.ttf',
-    ]
+    font_path = os.path.join(
+        settings.BASE_DIR,
+        'static',
+        'fonts',
+        'DejaVuSans.ttf'
+    )
 
-    font_name = 'Helvetica'
+    pdfmetrics.registerFont(
+        TTFont('UAFont', font_path)
+    )
 
-    for font_path in font_paths:
-        try:
-            pdfmetrics.registerFont(TTFont('UAFont', font_path))
-            font_name = 'UAFont'
-            break
-        except Exception:
-            continue
+    font_name = 'UAFont'
 
     pdf.setFont(font_name, 18)
 
